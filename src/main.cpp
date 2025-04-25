@@ -54,10 +54,60 @@ int main(void) {
       PORTB=0x03; //3
       break;
 
-      case 0x07: // fila 1
-      PORTB=0x04; //3
+      
+  }
+  //FILA2
+    PORTD |= 0xF0;    // Todas las columnas en high
+    PORTD &= ~0x20;   // Activar solo columna 0 (PD4 en LOW)
+    _delay_us(5);     // 
+    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+
+    switch (filas){
+      case 0x0E: // fila 1
+      PORTB=0x04;
       break;
-  
+
+      case 0x0D: // fila 1
+      PORTB=0x05; //2
+      break;
+
+      case 0x0B: // fila 1
+      PORTB=0x06; //3
+      break;
+
+      //FILA3
+    PORTD |= 0xF0;    // Todas las columnas en high
+    PORTD &= ~0x40;   // Activar solo columna 0 (PD4 en LOW)
+    _delay_us(5);     // 
+    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+
+    switch (filas){
+      case 0x0E: // fila 1
+      PORTB=0x07;
+      break;
+
+      case 0x0D: // fila 1
+      PORTB=0x08; //2
+      break;
+
+      case 0x0B: // fila 1
+      PORTB=0x09; //3
+      break;  
+  }
+  PORTD |= 0xF0;    // Todas las columnas en high
+    PORTD &= ~0x80;   // Activar solo columna 0 (PD4 en LOW)
+    _delay_us(5);     // 
+    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+
+    switch (filas){
+      
+      case 0x0D: // fila 1
+      PORTB=0x00; //2
+      break;
+
+      
+  }
+       
   }
 }
 }
