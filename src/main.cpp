@@ -13,29 +13,26 @@ int main(void) {
   DDRC|=0X08; //A3 led
 
   char filas;
-  char secuencia;
-  char cuenta;
-
+  
   while(1){
     //centenas display
     PORTC&=~(0X01);
     PORTC&=~(0X02);
     PORTC|=0X04;
-    PORTB |= ((cuenta / 100) << 4);   //centenas
-    PORTB &= ((cuenta / 100) << 4) | 0x0F; 
+ 
     _delay_ms(8);
     //decenas display
     PORTC&=~(0X01);
     PORTC&=~(0X04);
     PORTC|=0X02;
-    PORTB = (PORTB & 0x0F) | ((cuenta / 10) << 4);
+    
 
     _delay_ms(8);
     //unidades display
     PORTC&=~(0X04);
     PORTC&=~(0X02);
     PORTC|=0X01;
-    PORTB|=0x01;PORTB = (PORTB & 0xF0) | ((cuenta % 10) >> 4);
+    
     
     _delay_ms(8);
 
@@ -43,15 +40,24 @@ int main(void) {
     PORTD &= ~0x10;   // Activar solo columna 0 (PD4 en LOW)
     _delay_us(5);     // 
     filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+
     switch (filas){
       case 0x0E: // fila 1
-      if(secuencia==0){    
-
-        cuenta=1; // Enciende LED
-        
-        secuencia=1;
-      }
+      PORTB=0x01;
       break;
+
+      case 0x0D: // fila 1
+      PORTB=0x02; //2
+      break;
+
+      case 0x0B: // fila 1
+      PORTB=0x03; //3
+      break;
+
+      case 0x07: // fila 1
+      PORTB=0x04; //3
+      break;
+  
   }
 }
 }
