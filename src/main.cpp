@@ -52,10 +52,9 @@ int main(void) {
 
       case 0x0B: // fila 1
       PORTB=0x03; //3
-      break;
-
-      
+      break; 
   }
+
   //FILA2
     PORTD |= 0xF0;    // Todas las columnas en high
     PORTD &= ~0x20;   // Activar solo columna 0 (PD4 en LOW)
@@ -74,6 +73,7 @@ int main(void) {
       case 0x0B: // fila 1
       PORTB=0x06; //3
       break;
+    }
 
       //FILA3
     PORTD |= 0xF0;    // Todas las columnas en high
@@ -110,5 +110,5 @@ int main(void) {
        
   }
 }
-}
+
 
