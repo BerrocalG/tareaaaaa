@@ -4,110 +4,112 @@
 #include <util/delay.h>
 
 int main(void) {
-  DDRD|=0xF0; //matrizcolumna
-  DDRD&= ~0X0F; //matriz fila
-  PORTD |= 0x0F;    // en up fila
+  DDRB|=0x0F; //matrizcolumna
+  DDRC&= ~0X0F; //matriz fila
+  PORTC |= 0x0F;    // en up fila
 
-  DDRB|=0X0F; //codificador
-  DDRC|=0X07; //A0 A1 A2 display
-  DDRC|=0X08; //A3 led
+  DDRD|=0XF0; //codificador
+  DDRB|=0X30; //D(13) C(12)
+  DDRC|=0X10; //U
+
 
   char filas;
-  
+  char cuenta=0;
+
   while(1){
     //centenas display
-    PORTC&=~(0X01);
-    PORTC&=~(0X02);
-    PORTC|=0X04;
- 
-    _delay_ms(8);
-    //decenas display
-    PORTC&=~(0X01);
-    PORTC&=~(0X04);
-    PORTC|=0X02;
-    
-
-    _delay_ms(8);
-    //unidades display
-    PORTC&=~(0X04);
-    PORTC&=~(0X02);
-    PORTC|=0X01;
-    
-    
+    PORTC&=~(0X10); //unidades display
+    PORTB&=~(0X20); //decenas display
+    PORTB|=0X10; //centenas display
+    PORTD = (PORTD & 0x0F) | ((cuenta / 100) << 4);
     _delay_ms(8);
 
-    PORTD |= 0xF0;    // Todas las columnas en high
-    PORTD &= ~0x10;   // Activar solo columna 0 (PD4 en LOW)
+    //UNIDADES display
+    PORTB&=~(0X20); //d
+    PORTB&=~(0X10); //c
+    PORTC|=0X10; //u
+    PORTD = (PORTD & 0x0F) | ((cuenta % 10) << 4);
+    _delay_ms(8);
+
+    //DECENAS display
+    PORTB&=~(0X10); //c
+    PORTC&=~(0X10); //U
+    PORTB|=0X20; //D
+    PORTD = (PORTD & 0x0F) | ((cuenta / 10) << 4);
+    _delay_ms(8);
+
+    PORTB |= 0x0F;    // Todas las columnas en high
+    PORTB &= ~0x01;   // Activar solo columna 0 (PD4 en LOW)
     _delay_us(5);     // 
-    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+    filas = PINC & 0x0F; // Leemos solo las filas (PD0–PD3)
 
     switch (filas){
       case 0x0E: // fila 1
-      PORTB=0x01;
+      cuenta=1;      
       break;
 
       case 0x0D: // fila 1
-      PORTB=0x02; //2
+      cuenta=2;      
       break;
 
       case 0x0B: // fila 1
-      PORTB=0x03; //3
+      cuenta=3; //3
       break; 
   }
 
   //FILA2
-    PORTD |= 0xF0;    // Todas las columnas en high
-    PORTD &= ~0x20;   // Activar solo columna 0 (PD4 en LOW)
+    PORTB |= 0x0F;    // Todas las columnas en high
+    PORTB &= ~0x02;   // Activar solo columna 0 (PD4 en LOW)
     _delay_us(5);     // 
-    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+    filas = PINC & 0x0F; // Leemos solo las filas (PD0–PD3)
 
     switch (filas){
       case 0x0E: // fila 1
-      PORTB=0x04;
+      cuenta=4;
       break;
 
       case 0x0D: // fila 1
-      PORTB=0x05; //2
+      cuenta=5; //2
       break;
 
       case 0x0B: // fila 1
-      PORTB=0x06; //3
+      cuenta=6; //3
       break;
     }
 
+
       //FILA3
-    PORTD |= 0xF0;    // Todas las columnas en high
-    PORTD &= ~0x40;   // Activar solo columna 0 (PD4 en LOW)
+    PORTB |= 0x0F;    // Todas las columnas en high
+    PORTB &= ~0x04;   // Activar solo columna 0 (PD4 en LOW)
     _delay_us(5);     // 
-    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+    filas = PINC & 0x0F; // Leemos solo las filas (PD0–PD3)
 
     switch (filas){
       case 0x0E: // fila 1
-      PORTB=0x07;
+      cuenta=7;
       break;
 
       case 0x0D: // fila 1
-      PORTB=0x08; //2
+      cuenta=8; //2
       break;
 
       case 0x0B: // fila 1
-      PORTB=0x09; //3
+      cuenta=9; //3
       break;  
   }
-  PORTD |= 0xF0;    // Todas las columnas en high
-    PORTD &= ~0x80;   // Activar solo columna 0 (PD4 en LOW)
+  //FILA 4
+    PORTB |= 0x0F;    // Todas las columnas en high
+    PORTB &= ~0x08;   // Activar solo columna 0 (PD4 en LOW)
     _delay_us(5);     // 
-    filas = PIND & 0x0F; // Leemos solo las filas (PD0–PD3)
+    filas = PINC & 0x0F; // Leemos solo las filas (PD0–PD3)
 
     switch (filas){
       
       case 0x0D: // fila 1
-      PORTB=0x00; //2
+      cuenta=0; //2
       break;
-
-      
   }
-       
+         
   }
 }
 
